@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Valencia Flood Protection Register: seed prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,450;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#eef1ee; --paper:#fbfcfa; --ink:#18282c; --muted:#55666a; --line:#c9d3d1;
+  --accent:#1d5c66; --accent-soft:#d6e6e6; --warn:#8a5410; --warn-soft:#f3e6d0;
+  --serif:"Fraunces", Georgia, "Times New Roman", serif;
+  --sans:"DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --bg:#11191b; --paper:#182224; --ink:#e3eae9; --muted:#9fb0b2; --line:#2c3a3d;
+    --accent:#84c3cc; --accent-soft:#1f3a3e; --warn:#e0b36d; --warn-soft:#3a2e1b;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#11191b; --paper:#182224; --ink:#e3eae9; --muted:#9fb0b2; --line:#2c3a3d;
+  --accent:#84c3cc; --accent-soft:#1f3a3e; --warn:#e0b36d; --warn-soft:#3a2e1b;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:1rem;line-height:1.55}
+h1,h2,h3,p{margin:0}
+a{color:var(--accent);text-underline-offset:.2em}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
+
+.notice{background:var(--warn-soft);color:var(--ink);font-size:.875rem;padding:10px 0;border-bottom:1px solid var(--line)}
+.notice .wrap{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
+
+header.hero{padding:48px 0 32px}
+.hero .kicker{color:var(--muted);font-size:.9375rem;margin-bottom:12px}
+.hero h1{font-family:var(--serif);font-weight:450;font-size:clamp(2rem,4.6vw,3.25rem);line-height:1.08;letter-spacing:-.02em;max-width:22ch}
+.hero p.lede{margin-top:18px;max-width:62ch;font-size:1.0625rem;color:var(--muted)}
+
+.toolbar{display:flex;flex-wrap:wrap;gap:20px 32px;align-items:end;padding:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.group{display:flex;flex-direction:column;gap:8px}
+.group > span{font-size:.8125rem;color:var(--muted)}
+.seg{display:inline-flex;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{padding:7px 16px;border-radius:999px;font-size:.875rem;font-weight:500;min-height:36px}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--paper)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{padding:6px 12px;border:1px solid var(--line);border-radius:999px;font-size:.875rem;background:var(--paper);min-height:36px}
+.chips button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+
+.legend{display:flex;flex-wrap:wrap;gap:18px;font-size:.8125rem;color:var(--muted);padding:14px 0 6px}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+
+/* The evidence chain: a gauge of stations along a channel */
+.chain{display:grid;grid-template-columns:repeat(6,1fr);position:relative;margin:4px 0 2px}
+.chain::before{content:"";position:absolute;left:calc(100%/12);right:calc(100%/12);top:9px;height:2px;background:var(--line)}
+.station{display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;text-align:center}
+.dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--accent);background:var(--paper);position:relative;z-index:1}
+.dot.doc{background:var(--accent)}
+.dot.rep::after{content:"";position:absolute;inset:4px;border-radius:50%;background:var(--warn)}
+.dot.rep{border-color:var(--warn)}
+.dot.none{border-color:var(--line);border-style:dashed}
+.station small{font-size:.75rem;color:var(--muted);line-height:1.25}
+.station em{font-style:normal;font-size:.6875rem;color:var(--warn);line-height:1.2}
+.legend .dot{width:14px;height:14px}
+.legend .dot.rep::after{inset:3px}
+
+.records{list-style:none;margin:8px 0 0;padding:0}
+.record{border-bottom:1px solid var(--line)}
+.rhead{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:20px 32px;align-items:center;width:100%;text-align:left;padding:22px 0}
+.rhead:hover .rtitle{color:var(--accent)}
+.rmeta{font-size:.8125rem;color:var(--muted);margin-bottom:6px;display:flex;flex-wrap:wrap;gap:4px 14px}
+.rtitle{font-family:var(--serif);font-weight:600;font-size:1.3125rem;line-height:1.25;letter-spacing:-.01em}
+.status{display:inline-block;margin-top:10px;font-size:.8125rem;font-weight:600;padding:3px 10px;border-radius:6px;background:var(--accent-soft);color:var(--ink)}
+.status.reported{background:var(--warn-soft)}
+.toggle-hint{font-size:.8125rem;color:var(--accent);margin-top:8px;font-weight:500}
+
+.rbody{padding:0 0 28px}
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.box{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.box h3{font-size:.875rem;font-weight:600;margin-bottom:6px}
+.box p,.box li{font-size:.9375rem}
+.box ul{margin:0;padding-left:18px}
+.box.lead{border-color:var(--warn);background:var(--warn-soft)}
+.resident{max-width:68ch;font-size:1.0625rem}
+.resident p + p{margin-top:12px}
+.resident h3{font-size:.9375rem;margin:18px 0 6px}
+.resident ul{margin:0;padding-left:20px}
+.sources{margin-top:14px;font-size:.875rem;color:var(--muted)}
+.sources a{margin-right:12px}
+
+.gap{border:1px dashed var(--line);border-radius:10px;padding:18px 20px;margin-top:22px;background:transparent}
+.gap h3{font-family:var(--serif);font-weight:600;font-size:1.125rem;margin-bottom:6px}
+.gap p{color:var(--muted);max-width:70ch}
+
+section.more{padding:44px 0 56px;display:grid;grid-template-columns:1fr 1fr;gap:40px}
+section.more h2{font-family:var(--serif);font-weight:600;font-size:1.375rem;margin-bottom:12px}
+section.more p,section.more li{color:var(--muted);font-size:.9375rem}
+section.more ul{padding-left:18px;margin:0}
+section.more li + li{margin-top:8px}
+footer{border-top:1px solid var(--line);padding:20px 0 32px;font-size:.8125rem;color:var(--muted)}
+.empty{padding:28px 0;color:var(--muted)}
+
+@media (max-width:760px){
+  .rhead{grid-template-columns:1fr}
+  .cols{grid-template-columns:1fr}
+  section.more{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="notice"><div class="wrap">
+  <span>Seed prototype for team review only. Not an emergency service and not a safety assessment.</span>
+  <span>Evidence snapshot: 5 November 2026</span>
+</div></div>
+
+<main class="wrap">
+  <header class="hero">
+    <p class="kicker">Climate Frontline: Valencia flood register</p>
+    <h1>What was promised to reduce the next flood, and what can we verify?</h1>
+    <p class="lede">Seed records from the October 2024 DANA area, across the State, the Generalitat, the Diputació and town councils. Each record shows which stages are backed by an official document, which rest on reports, and what to ask for next.</p>
+  </header>
+
+  <div class="toolbar" role="group" aria-label="Filters">
+    <div class="group">
+      <span id="view-label">View as</span>
+      <div class="seg" role="group" aria-labelledby="view-label">
+        <button type="button" data-view="newsroom" aria-pressed="true">Newsroom</button>
+        <button type="button" data-view="resident" aria-pressed="false">Resident</button>
+      </div>
+    </div>
+    <div class="group">
+      <span id="level-label">Responsible level</span>
+      <div class="chips" id="levels" role="group" aria-labelledby="level-label"></div>
+    </div>
+  </div>
+
+  <div class="legend" aria-label="How to read the evidence chain">
+    <span><i class="dot doc" aria-hidden="true"></i>Official document seen</span>
+    <span><i class="dot rep" aria-hidden="true"></i>Reported, primary document not yet seen</span>
+    <span><i class="dot none" aria-hidden="true"></i>Not established in this packet</span>
+  </div>
+
+  <ul class="records" id="records"></ul>
+  <div id="gaps"></div>
+
+  <section class="more">
+    <div>
+      <h2>How to read this</h2>
+      <ul>
+        <li>An open station means this packet has not established that stage. It does not mean the work was never done.</li>
+        <li>Each stage needs its own evidence. Authorised funding is not a contract, and a contract is not completed work.</li>
+        <li>Amounts are shown by year as published. They are not totalled across different projects or stages.</li>
+        <li>No record claims that any street or home is protected.</li>
+      </ul>
+    </div>
+    <div>
+      <h2>Sources to connect next</h2>
+      <ul>
+        <li><a href="https://valencianews.es/tendencias/encuentro-estatal-por-la-transparencia-en-el-marco-del-x-congreso-internacional-de-transparencia-y-gobierno-abierto/">GVA Oberta DANA section</a>: aid, contract and donation viewers, plus a local transparency space joined by 53 town councils.</li>
+        <li><a href="https://valencianews.es/comarcas/la-diputacion-de-valencia-crea-un-portal-de-transparencia-con-toda-la-gestion-y-los-contratos-de-la-reconstruccion-tras-la-dana/">Diputació de València DANA portal</a>: contracts by service, decrees and its emergency protocol.</li>
+        <li><a href="https://www.lamoncloa.gob.es/info-dana/Documents/dana-actualizacion-datos-gobierno-19072025-12-00.pdf">Central government DANA data updates</a>: periodic PDF reports on aid and works.</li>
+        <li><a href="https://contrataciondelestado.es">Public-sector contracts platform</a> and the <a href="https://www.boe.es">BOE</a>: award and expropriation notices to confirm contract and progress stages.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  Adapted from the Climate Protection Register prototype (Bologna and Barcelona). Seed records were prepared from the sources linked on each record and have not yet been independently re-verified by an editor.
+</div></footer>
+
+<script>
+const STAGES = ["Promised","Funded","Contracted","Under way","Completed","Benefit assessed"];
+const LEVELS = ["All levels","State (CHJ)","Generalitat","Diputació","Town council"];
+const SRC = {
+  hacienda:{label:"Council of Ministers spending authorisation, 9 Dec 2025", url:"https://www.hacienda.gob.es/es-es/prensa/noticias/noticiaspdf//397.pdf"},
+  moncloa:{label:"Moncloa.com, 23 Jul 2026", url:"https://www.moncloa.com/2026/07/23/chj-proyectos-dana-poyo-magro-saleta-3404477/"},
+  ld:{label:"Libertad Digital, 17 Sep 2026", url:"https://www.libertaddigital.com/valencia/2026-09-17/paiporta-vuelve-a-inundarse-dos-anos-despues-de-la-dana-mientras-las-grandes-obras-siguen-en-proyecto-7461599/"},
+  dival:{label:"Valencia News on the Diputació portal, 23 Jun 2026", url:"https://valencianews.es/comarcas/la-diputacion-de-valencia-crea-un-portal-de-transparencia-con-toda-la-gestion-y-los-contratos-de-la-reconstruccion-tras-la-dana/"}
+};
+// chain values: d = official document seen, r = reported only, n = not established; optional note per stage
+const RECORDS = [
+  {id:"poyo-magro", level:"State (CHJ)", body:"Confederación Hidrográfica del Júcar", area:"Barranco del Poyo and río Magro",
+   title:"Channel improvement and restoration works on the Poyo and Magro",
+   status:"Multi-year funding authorised", kind:"doc",
+   chain:[["d"],["d"],["n"],["n"],["n"],["n"]],
+   known:"The Council of Ministers authorised spending commitments for the project on 9 December 2025: €1,000 in 2025, €1,170,000 in 2026, €3,500,000 in 2027, €5,499,000 in 2028 and €1,000,000 in 2029.",
+   unknown:"Whether the works have been tendered or awarded, the contractor, the start date and the area the works are designed to protect.",
+   next:"Search the public-sector contracts platform for the CHJ file; ask CHJ for the tender timetable.",
+   lead:"The 2026 tranche is €1.17M. Has any contract been awarded before the year ends?",
+   resident:"Money for this project has been approved in the State budget, spread over five years, with most of it planned for 2027 and 2028. Approval means the money can be spent. It does not show that work has started.",
+   ask:["When will the works be tendered, and when should they start?","Which streets and towns are the works designed to protect?"],
+   sources:["hacienda"]},
+  {id:"ten-projects", level:"State (CHJ)", body:"Confederación Hidrográfica del Júcar", area:"Poyo, Magro and Pozalet-Saleta basins",
+   title:"Ten flood-risk reduction projects for the worst-hit basins",
+   status:"Design contracts reported", kind:"reported",
+   chain:[["r"],["n","Works budget not seen"],["r","Design only"],["n"],["n"],["n"]],
+   known:"CHJ reportedly awarded the drafting of ten projects for about €4M to two joint ventures, with first proposals expected in autumn 2026, then public participation. Works tenders are not expected before 2027. In September 2026 the major works were still at project stage.",
+   unknown:"Whether the autumn proposals have been published, when participation opens, and how the works themselves will be funded.",
+   next:"Check CHJ’s website and the BOE for published proposals or a participation notice; obtain the two design contracts.",
+   lead:"First proposals were due this autumn. Has CHJ published them and opened public participation?",
+   resident:"Engineers have been hired to design ten projects, such as areas that can store floodwater and wider river channels. These are still plans. Building them is not expected to be tendered before 2027.",
+   ask:["When can residents see and comment on the proposals?","Which of the ten projects covers my town, and what is its timetable?"],
+   sources:["moncloa","ld"]},
+  {id:"dph-phase2", level:"State (CHJ)", body:"Confederación Hidrográfica del Júcar", area:"Valencia province channels",
+   title:"Phase 2 removal of channel blockages and bank repairs",
+   status:"Multi-year funding authorised", kind:"doc",
+   chain:[["d"],["d"],["n"],["n"],["n"],["n"]],
+   known:"Authorised commitments: €10,000 in 2025, €2,053,774.91 in 2026, €1,990,000 in 2027 and €400,000 in 2028, plus a separate technical-assistance contract for site supervision.",
+   unknown:"Which channels are included, the contractor and the progress of the works.",
+   next:"Obtain the list of channel sections and the award notice.",
+   lead:"",
+   resident:"Money has been approved to clear debris that blocks river channels and to repair damaged banks. The list of places included is not yet in this register.",
+   ask:["Which channels near me are included in Phase 2, and when will they be cleared?"],
+   sources:["hacienda"]},
+  {id:"torrent", level:"State (CHJ)", body:"Confederación Hidrográfica del Júcar", area:"Torrent",
+   title:"Land acquisition for flood-defence works at the Torrent wastewater plant",
+   status:"Funding authorised", kind:"doc",
+   chain:[["d"],["d"],["n"],["n"],["n"],["n"]],
+   known:"€300,000 was authorised in 2025 for expropriation linked to emergency flood-defence works and the set-back of works at the Torrent wastewater plant.",
+   unknown:"Whether the land has been acquired and whether the defence works are complete.",
+   next:"Look for the expropriation notice in the BOE and the related emergency works contract.",
+   lead:"",
+   resident:"Money was approved to buy land needed for flood-defence works around Torrent’s wastewater plant. This register has not yet confirmed the works are finished.",
+   ask:["Are the flood-defence works at the Torrent plant finished?"],
+   sources:["hacienda"]},
+  {id:"rerd", level:"Generalitat", body:"Generalitat Valenciana (Consell)", area:"Comunitat Valenciana",
+   title:"Generalitat recovery and resilience plan for the DANA (Plan RERD)",
+   status:"Plan named; contents not reviewed", kind:"reported",
+   chain:[["r"],["n"],["n"],["n"],["n"],["n"]],
+   known:"Press coverage refers to the Consell’s Plan RERD (Recovery, Reconstruction and Resilience) as the Generalitat’s framework for the DANA response.",
+   unknown:"Which of its measures reduce future flood risk, their budgets and their timetables.",
+   next:"Obtain the plan from the Generalitat and extract each flood-risk measure as its own record.",
+   lead:"",
+   resident:"The regional government has a plan for recovery and resilience after the DANA. This register has not yet reviewed what it commits to on flood protection.",
+   ask:["Which measures in the plan reduce flood risk in my area, and how much is budgeted?"],
+   sources:["moncloa"]},
+  {id:"protocol", level:"Diputació", body:"Diputació de València", area:"Valencia province",
+   title:"Diputació climate emergency protocol",
+   status:"Publication reported", kind:"reported",
+   chain:[["r","Protocol published"],["n"],["n"],["n"],["n"],["n"]],
+   known:"The Diputació’s DANA transparency portal, launched in June 2026, reportedly includes its climate emergency protocol and all DANA contracts by service, including water, roads and environment.",
+   unknown:"What the protocol commits the Diputació to, when it was adopted and whether it was used during the September 2026 rains.",
+   next:"Read the protocol on the portal and list the commitments it contains.",
+   lead:"",
+   resident:"The provincial council has published an emergency protocol for climate events. This register has not yet reviewed what it promises.",
+   ask:["What does the protocol require the Diputació to do before and during heavy rain?"],
+   sources:["dival"]},
+  {id:"paiporta", level:"Town council", body:"Ajuntament de Paiporta", area:"Paiporta",
+   title:"Paiporta urban drainage improvements",
+   status:"Council claim reported", kind:"reported",
+   chain:[["n"],["n"],["n"],["n"],["r","Partly, per council"],["n"]],
+   known:"After a storm of 60 litres per square metre in an hour on 16 September 2026, the council credited drainage works, including a system of about 30,000 litres in Plaza Blasco Ibáñez, for limiting damage. Local police handled 52 incidents.",
+   unknown:"Who funded and contracted the works, their cost and their design standard.",
+   next:"Find the contracts on the council’s transparency pages or the GVA local DANA space.",
+   lead:"The council says its drainage works helped. Who paid for them, and what storm are they designed for?",
+   resident:"The town council says its new drainage helped during the September 2026 storm. That is the council’s own assessment, not an independent check.",
+   ask:["What size of storm is the new drainage designed to handle?","Are more drainage works planned for my street?"],
+   sources:["ld"]}
+];
+const GAPS = [
+  {title:"Early warning commitments", text:"No record yet on commitments to improve flood warnings and alerts, a central question after October 2024."},
+  {title:"Valencia city and other affected towns", text:"Only one town council is covered so far. The next step is to sample towns that joined the GVA local DANA transparency space."}
+];
+
+let view = "newsroom", level = "All levels";
+const open = new Set();
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+const cls = {d:"doc", r:"rep", n:"none"};
+const word = {d:"official document seen", r:"reported only", n:"not established"};
+
+function chainHTML(r){
+  return `<div class="chain" role="list" aria-label="Evidence chain">` + r.chain.map((s,i)=>
+    `<div class="station" role="listitem"><i class="dot ${cls[s[0]]}" aria-hidden="true"></i><small>${STAGES[i]}<span class="visually-hidden" style="position:absolute;left:-9999px">: ${word[s[0]]}</span></small>${s[1]?`<em>${esc(s[1])}</em>`:""}</div>`
+  ).join("") + `</div>`;
+}
+function srcHTML(r){
+  return `<p class="sources">Sources: ${r.sources.map(k=>`<a href="${SRC[k].url}" target="_blank" rel="noopener">${esc(SRC[k].label)}</a>`).join("")}</p>`;
+}
+function bodyHTML(r){
+  if(view === "resident"){
+    return `<div class="resident"><p>${esc(r.resident)}</p><h3>Questions you can ask</h3><ul>${r.ask.map(a=>`<li>${esc(a)}</li>`).join("")}</ul>${srcHTML(r)}</div>`;
+  }
+  return `<div class="cols">
+      <div class="box"><h3>What the evidence shows</h3><p>${esc(r.known)}</p></div>
+      <div class="box"><h3>Not yet established</h3><p>${esc(r.unknown)}</p></div>
+      <div class="box"><h3>Next evidence request</h3><p>${esc(r.next)}</p></div>
+    </div>
+    ${r.lead?`<div class="box lead" style="margin-top:16px"><h3>Story lead to check</h3><p>${esc(r.lead)}</p></div>`:""}
+    ${srcHTML(r)}`;
+}
+function render(){
+  $("#levels").innerHTML = LEVELS.map(l=>`<button type="button" aria-pressed="${l===level}" data-level="${esc(l)}">${esc(l)}</button>`).join("");
+  const list = RECORDS.filter(r => level==="All levels" || r.level===level);
+  $("#records").innerHTML = list.length ? list.map(r=>{
+    const isOpen = open.has(r.id);
+    return `<li class="record">
+      <button type="button" class="rhead" aria-expanded="${isOpen}" aria-controls="b-${r.id}" data-id="${r.id}">
+        <div>
+          <div class="rmeta"><span>${esc(r.level)}</span><span>${esc(r.area)}</span></div>
+          <h2 class="rtitle">${esc(r.title)}</h2>
+          <span class="status ${r.kind==="reported"?"reported":""}">${esc(r.status)}</span>
+          <div class="toggle-hint">${isOpen?"Hide evidence":"Show evidence"}</div>
+        </div>
+        ${chainHTML(r)}
+      </button>
+      <div class="rbody" id="b-${r.id}" ${isOpen?"":"hidden"}>${bodyHTML(r)}</div>
+    </li>`;
+  }).join("") : `<li class="empty">No seed records at this level yet.</li>`;
+  const gaps = (level==="All levels") ? GAPS : [];
+  $("#gaps").innerHTML = gaps.map(g=>`<div class="gap"><h3>Not yet covered: ${esc(g.title)}</h3><p>${esc(g.text)}</p></div>`).join("");
+}
+document.addEventListener("click", e=>{
+  const v = e.target.closest("[data-view]");
+  if(v){ view = v.dataset.view; document.querySelectorAll("[data-view]").forEach(b=>b.setAttribute("aria-pressed", b===v)); render(); return; }
+  const l = e.target.closest("[data-level]");
+  if(l){ level = l.dataset.level; render(); return; }
+  const h = e.target.closest(".rhead");
+  if(h && !e.target.closest("a")){ const id = h.dataset.id; open.has(id)?open.delete(id):open.add(id); render(); document.querySelector(`[data-id="${id}"]`).focus(); }
+});
+render();
+</script>
+</body>
+</html>
