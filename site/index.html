@@ -109,6 +109,12 @@ section.more ul{padding-left:18px;margin:0}
 section.more li + li{margin-top:8px}
 footer{border-top:1px solid var(--line);padding:20px 0 32px;font-size:.8125rem;color:var(--muted)}
 .empty{padding:28px 0;color:var(--muted)}
+.group select{font:inherit;font-size:.875rem;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 34px 6px 14px;min-height:36px;max-width:100%;appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 18px) 55%,calc(100% - 13px) 55%;background-size:5px 5px;background-repeat:no-repeat}
+.subhead{font-family:var(--serif);font-weight:600;font-size:1.125rem;margin:28px 0 2px}
+.subnote{color:var(--muted);font-size:.9375rem;max-width:70ch;margin-top:4px}
+.basin-note{border:1px dashed var(--line);border-radius:10px;padding:16px 20px;margin-top:22px}
+.basin-note h3{font-size:.9375rem;font-weight:600;margin-bottom:6px}
+.basin-note ul{margin:6px 0 0;padding-left:18px;color:var(--muted);font-size:.9375rem}
 
 @media (max-width:1024px){
   .wrap{width:auto}
@@ -131,7 +137,7 @@ footer{border-top:1px solid var(--line);padding:20px 0 32px;font-size:.8125rem;c
   <header class="hero">
     <p class="kicker">Climate Frontline: Valencia flood register</p>
     <h1>What was promised to reduce the next flood, and what can we verify?</h1>
-    <p class="lede">Seed records from the October 2024 DANA area, across the State, the Generalitat, the Diputació and town councils. Each record shows which stages are backed by an official document, which rest on reports, and what to ask for next.</p>
+    <p class="lede">Seed records from the October 2024 DANA area, across the State, the Generalitat, the Diputació and town councils. Each record shows which stages are backed by an official document, which rest on reports, and what to ask for next. Choose a municipality to see what applies there.</p>
   </header>
 
   <div class="toolbar" role="group" aria-label="Filters">
@@ -141,6 +147,10 @@ footer{border-top:1px solid var(--line);padding:20px 0 32px;font-size:.8125rem;c
         <button type="button" data-view="newsroom" aria-pressed="true">Newsroom</button>
         <button type="button" data-view="resident" aria-pressed="false">Resident</button>
       </div>
+    </div>
+    <div class="group">
+      <label for="town" id="town-label" style="font-size:.8125rem;color:var(--muted)">Municipality</label>
+      <select id="town"></select>
     </div>
     <div class="group">
       <span id="level-label">Responsible level</span>
@@ -154,7 +164,7 @@ footer{border-top:1px solid var(--line);padding:20px 0 32px;font-size:.8125rem;c
     <span><i class="dot none" aria-hidden="true"></i>Not established in this packet</span>
   </div>
 
-  <ul class="records" id="records"></ul>
+  <div id="records"></div>
   <div id="gaps"></div>
 
   <section class="more">
@@ -208,7 +218,7 @@ const SRC = {
 };
 // chain values: d = official document seen, r = reported only, n = not established; optional note per stage
 const RECORDS = [
-  {id:"poyo-magro", level:"State", body:"Confederación Hidrográfica del Júcar", area:"Barranco del Poyo and río Magro",
+  {id:"poyo-magro", reach:"basin", towns:[], level:"State", body:"Confederación Hidrográfica del Júcar", area:"Barranco del Poyo and río Magro",
    title:"Channel improvement and restoration works on the Poyo and Magro",
    status:"Multi-year funding authorised", kind:"doc",
    chain:[["d"],["d"],["n"],["n"],["n"],["n"]],
@@ -219,7 +229,7 @@ const RECORDS = [
    resident:"Money for this project has been approved in the State budget, spread over five years, with most of it planned for 2027 and 2028. Approval means the money can be spent. It does not show that work has started.",
    ask:["When will the works be tendered, and when should they start?","Which streets and towns are the works designed to protect?"],
    sources:["hacienda"]},
-  {id:"ten-projects", level:"State", body:"Confederación Hidrográfica del Júcar", area:"Poyo, Magro and Pozalet-Saleta basins",
+  {id:"ten-projects", reach:"basin", towns:[], level:"State", body:"Confederación Hidrográfica del Júcar", area:"Poyo, Magro and Pozalet-Saleta basins",
    title:"Ten flood-risk reduction projects for the worst-hit basins",
    status:"Design contract awarded", kind:"doc",
    chain:[["r"],["n","Works budget not seen"],["d","Design only"],["n"],["n"],["n"]],
@@ -230,7 +240,7 @@ const RECORDS = [
    resident:"Engineers have been hired to design ten projects, such as areas that can store floodwater and wider river channels. These are still plans. Building them is not expected to be tendered before 2027.",
    ask:["When can residents see and comment on the proposals?","Which of the ten projects covers my town, and what is its timetable?"],
    sources:["moncloa","ld","p_alt"]},
-  {id:"dph-phase2", level:"State", body:"Confederación Hidrográfica del Júcar", area:"Valencia province channels",
+  {id:"dph-phase2", reach:"province", towns:[], level:"State", body:"Confederación Hidrográfica del Júcar", area:"Valencia province channels",
    title:"Phase 2 removal of channel blockages and bank repairs",
    status:"Multi-year funding authorised", kind:"doc",
    chain:[["d"],["d"],["n"],["n"],["n"],["n"]],
@@ -241,7 +251,7 @@ const RECORDS = [
    resident:"Money has been approved to clear debris that blocks river channels and to repair damaged banks. The list of places included is not yet in this register.",
    ask:["Which channels near me are included in Phase 2, and when will they be cleared?"],
    sources:["hacienda"]},
-  {id:"torrent", level:"State", body:"Confederación Hidrográfica del Júcar", area:"Torrent",
+  {id:"torrent", reach:"town", towns:["Torrent"], level:"State", body:"Confederación Hidrográfica del Júcar", area:"Torrent",
    title:"Land acquisition for flood-defence works at the Torrent wastewater plant",
    status:"Funding authorised", kind:"doc",
    chain:[["d"],["d"],["n"],["n"],["n"],["n"]],
@@ -252,7 +262,7 @@ const RECORDS = [
    resident:"Money was approved to buy land needed for flood-defence works around Torrent’s wastewater plant. This register has not yet confirmed the works are finished.",
    ask:["Are the flood-defence works at the Torrent plant finished?"],
    sources:["hacienda"]},
-  {id:"chj-emergency", level:"State", body:"Confederación Hidrográfica del Júcar", area:"Poyo, Magro and other channels",
+  {id:"chj-emergency", reach:"basin", towns:["Picanya"], level:"State", body:"Confederación Hidrográfica del Júcar", area:"Poyo, Magro and other channels",
    title:"Emergency repairs to river channels and the river-monitoring network after the DANA",
    status:"Emergency contracts awarded", kind:"doc",
    chain:[["n"],["n"],["d","Five contracts"],["n"],["n"],["n"]],
@@ -263,7 +273,7 @@ const RECORDS = [
    resident:"The river authority has contracts to repair river channels and the river-level monitoring network damaged in October 2024. These are repairs. The contracts do not show whether the work is finished.",
    ask:["Have the repairs on my stretch of river been finished?","Do the repairs only restore the channels, or do they add protection?"],
    sources:["p_magro","p_poyo","p_poyob","p_cauces","p_saih"]},
-  {id:"saleta", level:"State", body:"Ministry for the Ecological Transition (Dirección General del Agua)", area:"Barranco de la Saleta, Aldaia",
+  {id:"saleta", reach:"town", towns:["Aldaia"], level:"State", body:"Ministry for the Ecological Transition (Dirección General del Agua)", area:"Barranco de la Saleta, Aldaia",
    title:"Flood protection on the Barranco de la Saleta, section 2",
    status:"Tender under evaluation", kind:"doc",
    chain:[["n"],["n"],["n","Tendered, not yet awarded"],["n"],["n"],["n"]],
@@ -274,7 +284,7 @@ const RECORDS = [
    resident:"The national government is choosing a company for a large flood-protection project on the Barranco de la Saleta near Aldaia. Nothing has been awarded or built yet.",
    ask:["Which streets in Aldaia is the project designed to protect?","When is construction expected to start?"],
    sources:["p_saleta"]},
-  {id:"barxeta", level:"State", body:"Ministry for the Ecological Transition (Dirección General del Agua)", area:"Barranco de Barxeta",
+  {id:"barxeta", reach:"basin", towns:[], level:"State", body:"Ministry for the Ecological Transition (Dirección General del Agua)", area:"Barranco de Barxeta",
    title:"Flood-risk adaptation works on the Barranco de Barxeta, phases I and II",
    status:"Tenders under evaluation", kind:"doc",
    chain:[["n"],["n"],["n","Tendered, not yet awarded"],["n"],["n"],["n"]],
@@ -285,7 +295,7 @@ const RECORDS = [
    resident:"The national government is choosing companies to build flood works on the Barranco de Barxeta in two phases. Nothing has been awarded or built yet.",
    ask:["Which homes and roads are the Barxeta works designed to protect?"],
    sources:["p_barx1","p_barx2","p_barxexp"]},
-  {id:"forest", level:"State", body:"Ministry for the Ecological Transition (Dirección General de Biodiversidad, Bosques y Desertificación)", area:"Poyo, Pozalet-Saleta and Magro catchments",
+  {id:"forest", reach:"basin", towns:[], level:"State", body:"Ministry for the Ecological Transition (Dirección General de Biodiversidad, Bosques y Desertificación)", area:"Poyo, Pozalet-Saleta and Magro catchments",
    title:"Forest and soil restoration to slow runoff in the Poyo, Pozalet-Saleta and Magro catchments",
    status:"Contract awarded", kind:"doc",
    chain:[["n"],["n"],["d"],["n"],["n"],["n"]],
@@ -296,7 +306,7 @@ const RECORDS = [
    resident:"A company has been hired to restore forest and soil in the hills upstream of the worst-hit towns, which helps the ground hold back rainwater. The contract does not show whether the work is done.",
    ask:["Where in the catchment is the restoration taking place?"],
    sources:["p_forest"]},
-  {id:"rerd", level:"Generalitat", body:"Generalitat Valenciana (Consell)", area:"Comunitat Valenciana",
+  {id:"rerd", reach:"region", towns:[], level:"Generalitat", body:"Generalitat Valenciana (Consell)", area:"Comunitat Valenciana",
    title:"Generalitat recovery and resilience plan for the DANA (Plan RERD)",
    status:"Plan named; contents not reviewed", kind:"reported",
    chain:[["r"],["n"],["n"],["n"],["n"],["n"]],
@@ -307,7 +317,7 @@ const RECORDS = [
    resident:"The regional government has a plan for recovery and resilience after the DANA. This register has not yet reviewed what it commits to on flood protection.",
    ask:["Which measures in the plan reduce flood risk in my area, and how much is budgeted?"],
    sources:["moncloa"]},
-  {id:"beniparrell", level:"Generalitat", body:"Conselleria de Agricultura, Agua, Ganadería y Pesca", area:"Beniparrell",
+  {id:"beniparrell", reach:"town", towns:["Beniparrell"], level:"Generalitat", body:"Conselleria de Agricultura, Agua, Ganadería y Pesca", area:"Beniparrell",
    title:"Works on the Barranco de Picassent in Beniparrell to reduce flood risk",
    status:"Contract awarded", kind:"doc",
    chain:[["n"],["n"],["d"],["n"],["n"],["n"]],
@@ -318,7 +328,7 @@ const RECORDS = [
    resident:"The regional government has hired a company to rebuild the barranco through Beniparrell to reduce the risk of flooding in the town. The contract does not show that work has started.",
    ask:["When will the works start and finish?","How big a flood is the channel designed for?"],
    sources:["p_benip","p_benipexp"]},
-  {id:"casella", level:"Generalitat", body:"Conselleria de Agricultura, Agua, Ganadería y Pesca", area:"Alzira",
+  {id:"casella", reach:"town", towns:["Alzira"], level:"Generalitat", body:"Conselleria de Agricultura, Agua, Ganadería y Pesca", area:"Alzira",
    title:"Widening the Barranco de la Casella to prevent flooding in Alzira",
    status:"Contract awarded", kind:"doc",
    chain:[["n"],["n"],["d","Design and build"],["n"],["n"],["n"]],
@@ -329,7 +339,7 @@ const RECORDS = [
    resident:"The regional government has hired a company to design and build a wider channel for the Barranco de la Casella to protect central Alzira. The contract does not show that work has started.",
    ask:["When will the works on the Barranco de la Casella be finished?"],
    sources:["p_casella"]},
-  {id:"protocol", level:"Diputació", body:"Diputació de València", area:"Valencia province",
+  {id:"protocol", reach:"province", towns:[], level:"Diputació", body:"Diputació de València", area:"Valencia province",
    title:"Diputació climate emergency protocol",
    status:"Publication reported", kind:"reported",
    chain:[["r","Protocol published"],["n"],["n"],["n"],["n"],["n"]],
@@ -340,7 +350,7 @@ const RECORDS = [
    resident:"The provincial council has published an emergency protocol for climate events. This register has not yet reviewed what it promises.",
    ask:["What does the protocol require the Diputació to do before and during heavy rain?"],
    sources:["dival"]},
-  {id:"paiporta", level:"Town council", body:"Ajuntament de Paiporta", area:"Paiporta",
+  {id:"paiporta", reach:"town", towns:["Paiporta"], level:"Town council", body:"Ajuntament de Paiporta", area:"Paiporta",
    title:"Paiporta urban drainage improvements",
    status:"Council claim reported", kind:"reported",
    chain:[["n"],["n"],["n"],["n"],["r","Partly, per council"],["n"]],
@@ -357,7 +367,10 @@ const GAPS = [
   {title:"Valencia city and other affected towns", text:"Only one town council is covered so far. The next step is to sample towns that joined the GVA local DANA transparency space."}
 ];
 
-let view = "newsroom", level = "All levels";
+let view = "newsroom", level = "All levels", town = "";
+const TOWNS = [...new Set(RECORDS.flatMap(r => r.towns))].sort((a,b)=>a.localeCompare(b,"es"));
+const WIDE = {province:"Valencia province", region:"Comunitat Valenciana"};
+try { const h = decodeURIComponent(location.hash.replace(/^#town=/,"")); if(TOWNS.includes(h)) town = h; } catch(e){}
 const open = new Set();
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
@@ -386,8 +399,10 @@ function bodyHTML(r){
 }
 function render(){
   $("#levels").innerHTML = LEVELS.map(l=>`<button type="button" aria-pressed="${l===level}" data-level="${esc(l)}">${esc(l)}</button>`).join("");
-  const list = RECORDS.filter(r => level==="All levels" || r.level===level);
-  $("#records").innerHTML = list.length ? list.map(r=>{
+  $("#town").innerHTML = `<option value="">All municipalities</option>` +
+    TOWNS.map(x=>`<option value="${esc(x)}"${x===town?" selected":""}>${esc(x)}</option>`).join("");
+  const atLevel = RECORDS.filter(r => level==="All levels" || r.level===level);
+  const item = r=>{
     const isOpen = open.has(r.id);
     return `<li class="record">
       <button type="button" class="rhead" aria-expanded="${isOpen}" aria-controls="b-${r.id}" data-id="${r.id}">
@@ -401,10 +416,28 @@ function render(){
       </button>
       <div class="rbody" id="b-${r.id}" ${isOpen?"":"hidden"}>${bodyHTML(r)}</div>
     </li>`;
-  }).join("") : `<li class="empty">No seed records at this level yet.</li>`;
-  const gaps = (level==="All levels") ? GAPS : [];
+  };
+  const ul = rs => `<ul class="records">${rs.map(item).join("")}</ul>`;
+  if(!town){
+    $("#records").innerHTML = atLevel.length ? ul(atLevel) : `<p class="empty">No seed records at this level yet.</p>`;
+  } else {
+    const named = atLevel.filter(r => r.towns.includes(town));
+    const wide = atLevel.filter(r => WIDE[r.reach]);
+    const basin = atLevel.filter(r => r.reach==="basin" && !r.towns.includes(town));
+    $("#records").innerHTML =
+      `<h2 class="subhead">Records that name ${esc(town)}</h2>` +
+      (named.length ? ul(named) : `<p class="empty">No record at this level names ${esc(town)} yet.</p>`) +
+      (wide.length ? `<h2 class="subhead">Records covering the whole province or region</h2><p class="subnote">These apply to ${esc(town)} along with every other municipality in their area.</p>` + ul(wide) : "") +
+      (basin.length ? `<div class="basin-note"><h3>River-basin records not yet tied to towns</h3><p class="subnote">These cover river basins or channels, but their sources do not yet list which municipalities are included. Choose All municipalities to see them.</p><ul>${basin.map(r=>`<li>${esc(r.title)} (${esc(r.area)})</li>`).join("")}</ul></div>` : "");
+  }
+  const gaps = (level==="All levels" && !town) ? GAPS : [];
   $("#gaps").innerHTML = gaps.map(g=>`<div class="gap"><h3>Not yet covered: ${esc(g.title)}</h3><p>${esc(g.text)}</p></div>`).join("");
 }
+$("#town").addEventListener("change", e=>{
+  town = e.target.value;
+  try { history.replaceState(null, "", town ? "#town=" + encodeURIComponent(town) : location.pathname + location.search); } catch(err){}
+  render();
+});
 document.addEventListener("click", e=>{
   const v = e.target.closest("[data-view]");
   if(v){ view = v.dataset.view; document.querySelectorAll("[data-view]").forEach(b=>b.setAttribute("aria-pressed", b===v)); render(); return; }
