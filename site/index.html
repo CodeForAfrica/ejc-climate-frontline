@@ -97,7 +97,6 @@ header.hero{padding:48px 0 32px}
 .resident h3{font-size:.9375rem;margin:18px 0 6px}
 .resident ul{margin:0;padding-left:20px}
 .sources{margin-top:14px;font-size:.875rem;color:var(--muted)}
-.sources a{margin-right:12px}
 
 .gap{border:1px dashed var(--line);border-radius:10px;padding:18px 20px;margin-top:22px;background:transparent}
 .gap h3{font-family:var(--serif);font-weight:600;font-size:1.125rem;margin-bottom:6px}
@@ -291,7 +290,7 @@ function chainHTML(r){
   ).join("") + `</div>`;
 }
 function srcHTML(r){
-  return `<p class="sources">Sources: ${r.sources.map(k=>`<a href="${SRC[k].url}" target="_blank" rel="noopener">${esc(SRC[k].label)}</a>`).join("")}</p>`;
+  return `<p class="sources">Sources: ${r.sources.map(k=>`<a href="${SRC[k].url}" target="_blank" rel="noopener">${esc(SRC[k].label)}</a>`).join("; ")}</p>`;
 }
 function bodyHTML(r){
   if(view === "resident"){
