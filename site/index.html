@@ -97,6 +97,13 @@ header.hero{padding:48px 0 32px}
 .resident h3{font-size:.9375rem;margin:18px 0 6px}
 .resident ul{margin:0;padding-left:20px}
 .sources{margin-top:14px;font-size:.875rem;color:var(--muted)}
+.dates{margin-top:16px}
+.dates ol{list-style:none;margin:6px 0 0;padding:0;border-left:2px solid var(--line)}
+.dates li{position:relative;padding:0 0 8px 16px;font-size:.9375rem}
+.dates li::before{content:"";position:absolute;left:-5px;top:.45em;width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.dates li.future::before{background:var(--paper);border:2px solid var(--accent);width:4px;height:4px}
+.dates time{display:inline-block;min-width:7.5em;font-weight:600;font-variant-numeric:tabular-nums}
+.dates .tag{font-size:.75rem;color:var(--muted);margin-left:6px}
 
 .gap{border:1px dashed var(--line);border-radius:10px;padding:18px 20px;margin-top:22px;background:transparent}
 .gap h3{font-family:var(--serif);font-weight:600;font-size:1.125rem;margin-bottom:6px}
@@ -190,7 +197,7 @@ footer{border-top:1px solid var(--line);padding:20px 0 32px;font-size:.8125rem;c
 </main>
 
 <footer><div class="wrap">
-  Adapted from the Climate Protection Register prototype (Bologna and Barcelona). Seed records were prepared from the sources linked on each record and have not yet been independently re-verified by an editor. Contract details come from the contracts platform’s open data; the contract documents themselves have not yet been read.
+  Adapted from the Climate Protection Register prototype (Bologna and Barcelona). Seed records were prepared from the sources linked on each record and have not yet been independently re-verified by an editor. Contract details come from the contracts platform’s open data and the published contract documents, read in November 2026. Start, progress and completion records are not published there.
 </div></footer>
 
 <script>
@@ -243,6 +250,7 @@ const RECORDS = [
    lead:"The 2026 tranche is €1.17M. Has the commission to Tragsa been issued, and has any of that money been spent?",
    resident:"Money for this project has been approved in the State budget, spread over five years, with most of it planned for 2027 and 2028. Approval means the money can be spent. It does not show that work has started.",
    ask:["When should the works start?","Which streets and towns are the works designed to protect?"],
+   dates:[["2025-10-31", "MITECO’s DANA plan lists the works as a commission to Tragsa (about €10M)"], ["2025-12-09", "Council of Ministers authorises spending for 2025–2029"]],
    sources:["hacienda","mit_plan"]},
   {id:"ten-projects", reach:"basin", towns:["46111", "46186", "46250", "46223", "46022", "46193", "46249", "46019", "46139", "46031", "46029", "46244", "46094", "46165"], level:"State", body:"Confederación Hidrográfica del Júcar", area:"Poyo, Magro and Pozalet-Saleta basins",
    title:"Ten flood-risk reduction projects for the worst-hit basins",
@@ -254,6 +262,7 @@ const RECORDS = [
    lead:"The design contracts run to mid-2029, while MITECO’s plan says the measures start in 2026. When will residents see the proposals, and when could works begin?",
    resident:"Engineers have been hired to design ten projects, such as areas that can store floodwater and wider river channels. Their contracts run until about mid-2029, with public consultation along the way. These are still plans.",
    ask:["When can residents see and comment on the proposals?","Which of the ten projects covers my town, and what is its timetable?"],
+   dates:[["2025-09-26", "MITECO declares the tender urgent"], ["2025-10-31", "MITECO’s DANA plan lists the measures the projects are to design"], ["2025-11-17", "Tender published in the EU journal"], ["2026-04-06", "Lot 2 (Magro, Saleta, Turia, Albufera) awarded"], ["2026-05-13", "Lot 1 (Poyo) awarded"], ["2026-06-11", "Lot 2 contract signed"], ["2026-07-02", "Lot 1 contract signed"], ["~2029-07", "Contracts due to end (36 months)"]],
    sources:["moncloa","ld","p_alt","mit_10","mit_plan"]},
   {id:"dph-phase2", reach:"province", towns:[], level:"State", body:"Confederación Hidrográfica del Júcar", area:"Valencia province channels",
    title:"Phase 2 removal of channel blockages and bank repairs",
@@ -265,6 +274,7 @@ const RECORDS = [
    lead:"",
    resident:"Money has been approved to clear debris that blocks river channels and to repair damaged banks. The list of places included is not yet in this register.",
    ask:["Which channels near me are included in Phase 2, and when will they be cleared?"],
+   dates:[["2025-10-31", "MITECO’s DANA plan lists phase 2 as a commission to Tragsa (€4M)"], ["2025-12-09", "Council of Ministers authorises spending for 2025–2028"]],
    sources:["hacienda","mit_plan"]},
   {id:"torrent", reach:"town", towns:["46244"], level:"State", body:"Confederación Hidrográfica del Júcar", area:"Torrent",
    title:"Land acquisition for flood-defence works at the Torrent wastewater plant",
@@ -276,6 +286,7 @@ const RECORDS = [
    lead:"",
    resident:"Money was approved to buy land needed for flood-defence works around Torrent’s wastewater plant. This register has not yet confirmed the works are finished.",
    ask:["Are the flood-defence works at the Torrent plant finished?"],
+   dates:[["2025-05-28", "CHJ declares emergency works at the Torrent wastewater plant (€6.2M)"], ["2025-10-31", "MITECO’s DANA plan lists the land purchase (€0.3M)"], ["2025-12-09", "Council of Ministers authorises €300,000 for the land"]],
    sources:["hacienda","mit_plan"]},
   {id:"chj-emergency", reach:"basin", towns:["46186", "46193", "46094", "46165", "46111", "46244", "46021", "46005", "46102", "46214", "46148", "46109", "46213", "46249", "46077", "46261", "46158", "46012", "46248", "46176", "46212", "46156", "46026", "46093", "46085", "46019", "46139", "46029", "46008", "46197", "46215", "46125", "46235", "46172"], level:"State", body:"Confederación Hidrográfica del Júcar", area:"Poyo, Magro and other channels",
    title:"Emergency repairs to river channels and the river-monitoring network after the DANA",
@@ -287,6 +298,7 @@ const RECORDS = [
    lead:"All five contracts were signed by February 2025 with terms of 6 to 12 months, so they should have ended by early 2026. Has CHJ received the works, and is the damage repaired?",
    resident:"The river authority has contracts to repair river channels and the river-level monitoring network damaged in October 2024. These are repairs. The contracts do not show whether the work is finished.",
    ask:["Have the repairs on my stretch of river been finished?","Do the repairs only restore the channels, or do they add protection?"],
+   dates:[["2024-10-29", "DANA floods"], ["2024-11-19", "River-monitoring network (SAIH): emergency declared and contract signed"], ["2024-11-29", "Channels, phase I: emergency declared and contract signed"], ["2024-12-16", "Poyo from Picanya to its mouth: emergency declared"], ["2025-01-09", "Barranco del Poyo contract signed"], ["2025-02-06", "Magro and upper Poyo: emergencies declared"], ["2025-02-26", "Magro and Poyo banks contracts signed"], ["~2026-02", "Last contracts due to end (12-month terms)"], ["2026-05", "Platform entries updated to show EU recovery funding"]],
    sources:["p_magro","p_poyo","p_poyob","p_cauces","p_saih","chj_emerg","mit_plan"]},
   {id:"saleta", reach:"town", towns:["46021", "46005", "46110", "46250"], level:"State", body:"Ministry for the Ecological Transition (Dirección General del Agua)", area:"Barranco de la Saleta, Aldaia to the new Turia channel",
    title:"Flood protection on the Barranco de la Saleta, sections 1 and 2",
@@ -298,6 +310,7 @@ const RECORDS = [
    lead:"18 companies bid for the main Saleta section, the lowest 28.8% below budget. Will that bid stand, and when will work start on a project the plan says should begin in 2026?",
    resident:"The national government is choosing companies for a large flood-protection project on the Barranco de la Saleta, meant to protect Aldaia, Alaquàs and Xirivella by sending floodwater to the new Turia channel. Nothing has been awarded or built yet.",
    ask:["Which streets in my town is the project designed to protect?", "When is construction expected to start?"],
+   dates:[["2025-04", "CEDEX hydraulic study raises the design flow to 130 m³/s"], ["2025-10-31", "MITECO’s DANA plan commits €100M, starting in 2026"], ["2026-07-14", "Council of Ministers authorises the main section"], ["2026-08-18", "Section 2 tender published (an earlier notice was withdrawn)"], ["2026-10-01", "Section 2: 18 bids opened"], ["2026-11-12", "Section 2 prices opened; lowest bidder asked to justify its price"], ["2026-11-20", "Section 1 tender published"], ["2026-12-17", "Section 1 bids due"]],
    sources:["p_saleta", "p_saleta1", "mit_saleta","mit_plan"]},
   {id:"barxeta", reach:"town", towns:["46083"], level:"State", body:"Ministry for the Ecological Transition (Dirección General del Agua)", area:"Barranco de Barxeta, Carcaixent",
    title:"Flood-risk adaptation works on the Barranco de Barxeta in Carcaixent, phases I and II",
@@ -309,6 +322,7 @@ const RECORDS = [
    lead:"Lantania won both Barxeta phases, then withdrew, and the procurement board proposed a penalty and a bar on public contracts. Were they imposed, and how much has the delay cost?",
    resident:"The national government has hired companies to build flood works on the Barranco de Barxeta in Carcaixent, in two phases. The contracts do not show that work has started.",
    ask:["Which homes and roads in Carcaixent are the works designed to protect?", "When will work start?"],
+   dates:[["2022-11-17", "Projects started"], ["2023-07", "Land-acquisition notices published in the BOE"], ["2025-10-31", "MITECO’s DANA plan lists both phases"], ["2025-11-14", "Projects formally approved"], ["2025-12-19", "Both phases put out to tender"], ["2026-07", "Both phases awarded to Lantania"], ["2026-07-31", "Awards annulled after Lantania withdraws"], ["2026-11-19", "Phase II re-awarded to Arpo"], ["2026-11-23", "Phase I re-awarded to Torrescámara and Espina"]],
    sources:["p_barx1", "p_barx2", "p_barxexp", "chj_barx", "mit_barx","mit_plan"]},
   {id:"casella-barxeta", reach:"town", towns:["46017"], level:"State", body:"Confederación Hidrográfica del Júcar", area:"Casella and Barxeta barrancos, Alzira",
    title:"Natural floodwater storage area where the Casella and Barxeta barrancos meet",
@@ -320,6 +334,7 @@ const RECORDS = [
    lead:"",
    resident:"The river authority wants to create an area near Alzira where floodwater from the Casella and Barxeta barrancos can spread out safely. The work has been put out to tender but not yet awarded.",
    ask:["How will the storage area change flood risk in my part of Alzira?","When will work start?"],
+   dates:[["2025", "Project approved by CHJ"], ["2025-10-21", "Council of Ministers declares the land urgently needed"], ["2026-11-02", "Tender published"], ["2026-11-19", "Landowners convened in Alzira to record the land taken"], ["2026-11-30", "Bids due"]],
    sources:["p_cbx","p_cbxs","boe_cbx","mit_plan"]},
   {id:"cogullada", reach:"town", towns:["46083"], level:"State", body:"Confederación Hidrográfica del Júcar", area:"Cogullada, Carcaixent",
    title:"Flood-protection structures for the village of Cogullada",
@@ -331,6 +346,7 @@ const RECORDS = [
    lead:"Cogullada floods very often, according to CHJ’s own tender, yet the levee was already in the 2023 flood plan. Why is it only being tendered now?",
    resident:"The river authority has put out to tender flood defences for Cogullada, a village in Carcaixent. Nothing has been awarded or built yet.",
    ask:["What will the structures be, and where will they go?","When will work start?"],
+   dates:[["2023-01-22", "Flood risk management plan including the levee approved"], ["2025-10-21", "Council of Ministers declares the land urgently needed"], ["2026-11-02", "Tender published"], ["2026-11-18", "Landowners convened in Carcaixent to record the land taken"], ["2026-12-01", "Bids due (extended from 30 November)"]],
    sources:["p_cogullada","p_cogulladas","boe_cbx","mit_plan"]},
   {id:"forest", reach:"basin", towns:["46079", "46111", "46077", "46136", "46156", "46213", "46214", "46256", "46261"], level:"State", body:"Ministry for the Ecological Transition (Dirección General de Biodiversidad, Bosques y Desertificación)", area:"Poyo, Pozalet-Saleta and Magro catchments",
    title:"Forest and soil restoration to slow runoff in the Poyo, Pozalet-Saleta and Magro catchments",
@@ -342,6 +358,7 @@ const RECORDS = [
    lead:"The forest restoration was due to finish in February 2026, but a revised project costs €7.03M against a €5M contract. Was it finished, and who pays the difference?",
    resident:"A company has been hired to restore forest and soil in the hills upstream of the worst-hit towns, which helps the ground hold back rainwater. The contract does not show whether the work is done.",
    ask:["Where in the catchment is the restoration taking place?"],
+   dates:[["2025-04-08", "Emergency declared and contract awarded to Torrescámara"], ["2025-04-23", "Contract signed (6 months)"], ["2025-05-06", "Council of Ministers takes note of the emergency"], ["2025-07-30", "Contract modified; revised project budgeted at €7.03M"], ["2025-10-21", "Deadline extended by four months"], ["2026-02-22", "New deadline for the works"]],
    sources:["p_forest", "p_forestdecl","mit_plan"]},
   {id:"rerd", reach:"region", towns:[], level:"Generalitat", body:"Generalitat Valenciana (Consell)", area:"Comunitat Valenciana",
    title:"Generalitat recovery plan for the DANA (Plan Endavant)",
@@ -353,6 +370,7 @@ const RECORDS = [
    lead:"The Generalitat’s plan assigns every basin flood plan to the State with no start date, and the State’s own plan gives the Poyo and Saleta measures no amount of their own. Who is responsible, and when will the work start?",
    resident:"The regional government’s recovery plan, Plan Endavant, lists hundreds of measures. For flood protection on each river and barranco, it says the national government is responsible, and it sets no start date.",
    ask:["Which measures in the plan affect my town, and have they started?","Who is responsible for flood protection on my river or barranco?"],
+   dates:[["2025-07-29", "Plan Endavant published (343 initiatives)"]],
    sources:["endavant","endavant_prog","moncloa"]},
   {id:"beniparrell", reach:"town", towns:["46065"], level:"Generalitat", body:"Conselleria de Agricultura, Agua, Ganadería y Pesca", area:"Beniparrell",
    title:"Works on the Barranco de Picassent in Beniparrell to reduce flood risk",
@@ -364,6 +382,7 @@ const RECORDS = [
    lead:"An emergency contract signed in June 2026 runs until the end of 2028. What is being built in Beniparrell, and when will it be finished?",
    resident:"The regional government has hired a company to rebuild the barranco through Beniparrell to reduce the risk of flooding in the town. The contract does not show that work has started.",
    ask:["When will the works start and finish?","How big a flood is the channel designed for?"],
+   dates:[["2025", "Generalitat flood study for the Barranco de Picassent at Beniparrell"], ["2026-03-11", "Emergency contract awarded to Vías y Construcciones"], ["2026-06-01", "Contract signed (30 months)"], ["~2028-12", "Works due to end"]],
    sources:["p_benip","p_benipexp","mit_plan"]},
   {id:"casella", reach:"town", towns:["46017"], level:"Generalitat", body:"Conselleria de Agricultura, Agua, Ganadería y Pesca", area:"Alzira",
    title:"Widening the Barranco de la Casella to prevent flooding in Alzira",
@@ -375,6 +394,7 @@ const RECORDS = [
    lead:"",
    resident:"The regional government has hired a company to design and build a channel for the Barranco de la Casella and a new bridge, to protect central Alzira. It was planned before the 2024 flood and is due to finish around February 2027.",
    ask:["When will the works on the Barranco de la Casella be finished?"],
+   dates:[["2024-10-08", "Generalitat memo justifies the contract (before the DANA)"], ["2025-02-28", "Tender published"], ["2025-08-06", "Contract awarded to Arpo"], ["2025-09-14", "Contract signed (17 months: design, then works)"], ["~2027-02", "Works due to end"]],
    sources:["p_casella","mit_plan"]},
   {id:"protocol", reach:"province", towns:[], level:"Diputació", body:"Diputació de València", area:"Valencia province",
    title:"Diputació climate emergency protocol",
@@ -386,6 +406,7 @@ const RECORDS = [
    lead:"",
    resident:"The provincial council has published an emergency protocol for climate events. This register has not yet reviewed what it promises.",
    ask:["What does the protocol require the Diputació to do before and during heavy rain?"],
+   dates:[["2026-06", "Diputació launches its DANA transparency portal, reportedly with the protocol"]],
    sources:["dival"]},
   {id:"paiporta", reach:"town", towns:["46186"], level:"Town council", body:"Ajuntament de Paiporta", area:"Paiporta",
    title:"Paiporta urban drainage improvements",
@@ -397,6 +418,7 @@ const RECORDS = [
    lead:"The council says its drainage works helped. Who paid for them, and what storm are they designed for?",
    resident:"The town council says its new drainage helped during the September 2026 storm. That is the council’s own assessment, not an independent check.",
    ask:["What size of storm is the new drainage designed to handle?","Are more drainage works planned for my street?"],
+   dates:[["2026-09-16", "Storm of 60 l/m² in an hour; council credits its drainage works"]],
    sources:["ld"]}
 ];
 // INE municipality codes (INE list at 1 Jan 2026) -> names shown on the site
@@ -432,9 +454,23 @@ function srcHTML(r){
 function townsHTML(r){
   return r.towns.length ? `<p class="sources">Municipalities named in the sources: ${r.towns.map(c=>esc(NAME(c))).join(", ")}</p>` : "";
 }
+const SNAPSHOT = "2026-11-24";
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function fmtDate(d){
+  const est = d.startsWith("~"), [y,m,day] = d.replace("~","").split("-");
+  const s = day ? `${+day} ${MONTHS[m-1]} ${y}` : m ? `${MONTHS[m-1]} ${y}` : y;
+  return est ? "about " + s : s;
+}
+function datesHTML(r){
+  if(!r.dates || !r.dates.length) return "";
+  return `<div class="box dates"><h3>Key dates</h3><ol>${r.dates.map(([d,label])=>{
+    const future = d.replace("~","") > SNAPSHOT;
+    return `<li class="${future?"future":""}"><time datetime="${esc(d.replace("~",""))}">${esc(fmtDate(d))}</time> ${esc(label)}${future?`<span class="tag">scheduled</span>`:""}</li>`;
+  }).join("")}</ol></div>`;
+}
 function bodyHTML(r){
   if(view === "resident"){
-    return `<div class="resident"><p>${esc(r.resident)}</p><h3>Questions you can ask</h3><ul>${r.ask.map(a=>`<li>${esc(a)}</li>`).join("")}</ul>${townsHTML(r)}${srcHTML(r)}</div>`;
+    return `<div class="resident"><p>${esc(r.resident)}</p><h3>Questions you can ask</h3><ul>${r.ask.map(a=>`<li>${esc(a)}</li>`).join("")}</ul>${datesHTML(r)}${townsHTML(r)}${srcHTML(r)}</div>`;
   }
   return `<div class="cols">
       <div class="box"><h3>What the evidence shows</h3><p>${esc(r.known)}</p></div>
@@ -442,6 +478,7 @@ function bodyHTML(r){
       <div class="box"><h3>Next evidence request</h3><p>${esc(r.next)}</p></div>
     </div>
     ${r.lead?`<div class="box lead" style="margin-top:16px"><h3>Story lead to check</h3><p>${esc(r.lead)}</p></div>`:""}
+    ${datesHTML(r)}
     ${townsHTML(r)}${srcHTML(r)}`;
 }
 function render(){
