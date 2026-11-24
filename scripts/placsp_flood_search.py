@@ -173,7 +173,16 @@ def parse_entry(e):
     cpvs = sorted({(x.text or "").strip()[:8] for x in cfs.iter() if local(x) == "ItemClassificationCode" and x.text})
     nuts = sorted({(c.text or "").strip() for loc in cfs.iter() if local(loc) == "RealizedLocation"
                    for c in loc if local(c) == "CountrySubentityCode" and c.text})
-    results = [x for x in cfs if local(x) == "TenderResult"]
+    # A lot can appear more than once: as awarded (ResultCode 8) and again as formalised (9).
+    # Keep one result per lot, preferring formalised, then awarded, then the latest award date,
+    # so amounts are not counted twice.
+    by_lot = {}
+    for r in (x for x in cfs if local(x) == "TenderResult"):
+        lot = text(r, "AwardedTenderedProject", "ProcurementProjectLotID")
+        rank = ({"9": 2, "8": 1}.get(text(r, "ResultCode"), 0), text(r, "AwardDate"))
+        if lot not in by_lot or rank > by_lot[lot][0]:
+            by_lot[lot] = (rank, r)
+    results = [r for _, r in by_lot.values()]
     winners = sorted({text(r, "WinningParty", "PartyName", "Name") for r in results} - {""})
     award = sum(float(text(r, "AwardedTenderedProject", "LegalMonetaryTotal", "TaxExclusiveAmount") or 0) for r in results)
     return {
