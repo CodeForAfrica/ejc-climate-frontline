@@ -214,6 +214,7 @@ const SRC = {
   p_benip:{label:"Contracts platform: Barranco de Picassent works, CMAYOR/2026/26Y05/0013", url:"https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=sy%2FzDjgSIaY4NavIWzMcHA%3D%3D"},
   p_benipexp:{label:"Contracts platform: Picassent expropriation support, CMAYOR/2026/26Y05/0015", url:"https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=oL%2BdYvc0N9LI8aL3PRS10Q%3D%3D"},
   p_casella:{label:"Contracts platform: Barranco de la Casella, CMAYOR/2024/14Y02/0144", url:"https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=1flJGUuzG2yzz8fXU2i3eQ%3D%3D"},
+  chj_emerg:{label:"CHJ, DANA 2024 emergency works page and project sheets", url:"https://www.chj.es/es-es/medioambiente/obrasemergencia/Paginas/Obras_Emergencia_DANA_29O2024.aspx"},
   dival:{label:"Valencia News on the Diputació portal, 23 Jun 2026", url:"https://valencianews.es/comarcas/la-diputacion-de-valencia-crea-un-portal-de-transparencia-con-toda-la-gestion-y-los-contratos-de-la-reconstruccion-tras-la-dana/"}
 };
 // chain values: d = official document seen, r = reported only, n = not established; optional note per stage
@@ -229,11 +230,11 @@ const RECORDS = [
    resident:"Money for this project has been approved in the State budget, spread over five years, with most of it planned for 2027 and 2028. Approval means the money can be spent. It does not show that work has started.",
    ask:["When will the works be tendered, and when should they start?","Which streets and towns are the works designed to protect?"],
    sources:["hacienda"]},
-  {id:"ten-projects", reach:"basin", towns:[], level:"State", body:"Confederación Hidrográfica del Júcar", area:"Poyo, Magro and Pozalet-Saleta basins",
+  {id:"ten-projects", reach:"basin", towns:["Torrent","Picanya","Catarroja","Massanassa"], level:"State", body:"Confederación Hidrográfica del Júcar", area:"Poyo, Magro and Pozalet-Saleta basins",
    title:"Ten flood-risk reduction projects for the worst-hit basins",
    status:"Design contract awarded", kind:"doc",
    chain:[["r"],["n","Works budget not seen"],["d","Design only"],["n"],["n"],["n"]],
-   known:"CHJ reportedly awarded the drafting of ten projects for about €4M to two joint ventures, with first proposals expected in autumn 2026, then public participation. Works tenders are not expected before 2027. In September 2026 the major works were still at project stage. The contracts platform lists a matching award: a study of flood-risk reduction options, prioritisation and project drafting, won by two joint ventures (UTE TYPSA GECIVAL POYO and UTE AQUATEC-GRANELL HORTA SUD), with an award value of €3,969,670 excluding VAT. The contracting body is the Ministry’s Dirección General del Agua.",
+   known:"CHJ reportedly awarded the drafting of ten projects for about €4M to two joint ventures, with first proposals expected in autumn 2026, then public participation. Works tenders are not expected before 2027. In September 2026 the major works were still at project stage. Press coverage places the Poyo works between Torrent and l’Albufera, with wider channel banks planned in Picanya, Catarroja and Massanassa. The contracts platform lists a matching award: a study of flood-risk reduction options, prioritisation and project drafting, won by two joint ventures (UTE TYPSA GECIVAL POYO and UTE AQUATEC-GRANELL HORTA SUD), with an award value of €3,969,670 excluding VAT. The contracting body is the Ministry’s Dirección General del Agua.",
    unknown:"Whether the autumn proposals have been published, when participation opens, and how the works themselves will be funded.",
    next:"Check CHJ’s website and the BOE for published proposals or a participation notice; read the award documents for the list of ten projects.",
    lead:"First proposals were due this autumn. Has CHJ published them and opened public participation?",
@@ -262,17 +263,17 @@ const RECORDS = [
    resident:"Money was approved to buy land needed for flood-defence works around Torrent’s wastewater plant. This register has not yet confirmed the works are finished.",
    ask:["Are the flood-defence works at the Torrent plant finished?"],
    sources:["hacienda"]},
-  {id:"chj-emergency", reach:"basin", towns:["Picanya"], level:"State", body:"Confederación Hidrográfica del Júcar", area:"Poyo, Magro and other channels",
+  {id:"chj-emergency", reach:"basin", towns:["Paiporta", "Picanya", "Catarroja", "Massanassa", "Chiva", "Torrent", "Aldaia", "Alaquàs", "Quart de Poblet", "Riba-roja de Túria", "Loriguilla", "Cheste", "Requena", "Utiel", "Buñol", "Yátova", "Macastre", "Alborache", "Turís", "Montroi", "Real", "Llombai", "Alfarp", "Catadau", "Carlet", "L'Alcúdia", "Guadassuar", "Algemesí", "Albalat de la Ribera", "Polinyà de Xúquer", "Riola", "Fortaleny", "Sueca"], level:"State", body:"Confederación Hidrográfica del Júcar", area:"Poyo, Magro and other channels",
    title:"Emergency repairs to river channels and the river-monitoring network after the DANA",
    status:"Emergency contracts awarded", kind:"doc",
    chain:[["n"],["n"],["d","Five contracts"],["n"],["n"],["n"]],
-   known:"The contracts platform lists five CHJ emergency contracts to repair DANA damage, each last updated in May 2026: the río Magro and tributaries (€27,440,242.15), the Barranco del Poyo (€16,253,719.02), the Poyo banks and tributaries from the headwaters to Picanya (€12,640,223.18), channels, phase I (€8,264,462.81), and the automatic river-monitoring network, SAIH (€18,595,041.32). Amounts exclude VAT.",
+   known:"The contracts platform lists five CHJ emergency contracts to repair DANA damage, each last updated in May 2026: the río Magro and tributaries (€27,440,242.15), the Barranco del Poyo (€16,253,719.02), the Poyo banks and tributaries from the headwaters to Picanya (€12,640,223.18), channels, phase I (€8,264,462.81), and the automatic river-monitoring network, SAIH (€18,595,041.32). Amounts exclude VAT. CHJ’s emergency-works page and project sheets name the municipalities for each lot: Paiporta and Picanya, and Catarroja and Massanassa (Poyo, phase I); Chiva and Torrent, and Aldaia, Alaquàs, Quart, Riba-roja, Loriguilla and Cheste (Poyo banks); Requena and Utiel, Buñol, Yátova, Macastre and Alborache, Turís, Montroi, Real, Llombai, Alfarp and Catadau, and Carlet, L’Alcúdia, Guadassuar and Algemesí (Magro); and Albalat de la Ribera, Polinyà de Xúquer, Riola, Fortaleny, Sueca, Torrent and Catarroja (channels, phase I). The SAIH sheet names none.",
    unknown:"When the works started, whether they are finished, which stretches they cover, and whether they only restore the channels or add protection.",
    next:"Read the award documents for scope and deadlines; ask CHJ for progress on each contract.",
    lead:"The platform shows these emergency contracts resolved in May 2026, eighteen months after the flood. When did the work actually start, and is it finished?",
    resident:"The river authority has contracts to repair river channels and the river-level monitoring network damaged in October 2024. These are repairs. The contracts do not show whether the work is finished.",
    ask:["Have the repairs on my stretch of river been finished?","Do the repairs only restore the channels, or do they add protection?"],
-   sources:["p_magro","p_poyo","p_poyob","p_cauces","p_saih"]},
+   sources:["p_magro","p_poyo","p_poyob","p_cauces","p_saih","chj_emerg"]},
   {id:"saleta", reach:"town", towns:["Aldaia"], level:"State", body:"Ministry for the Ecological Transition (Dirección General del Agua)", area:"Barranco de la Saleta, Aldaia",
    title:"Flood protection on the Barranco de la Saleta, section 2",
    status:"Tender under evaluation", kind:"doc",
@@ -385,9 +386,12 @@ function chainHTML(r){
 function srcHTML(r){
   return `<p class="sources">Sources: ${r.sources.map(k=>`<a href="${SRC[k].url}" target="_blank" rel="noopener">${esc(SRC[k].label)}</a>`).join("; ")}</p>`;
 }
+function townsHTML(r){
+  return r.towns.length ? `<p class="sources">Municipalities named in the sources: ${r.towns.map(esc).join(", ")}</p>` : "";
+}
 function bodyHTML(r){
   if(view === "resident"){
-    return `<div class="resident"><p>${esc(r.resident)}</p><h3>Questions you can ask</h3><ul>${r.ask.map(a=>`<li>${esc(a)}</li>`).join("")}</ul>${srcHTML(r)}</div>`;
+    return `<div class="resident"><p>${esc(r.resident)}</p><h3>Questions you can ask</h3><ul>${r.ask.map(a=>`<li>${esc(a)}</li>`).join("")}</ul>${townsHTML(r)}${srcHTML(r)}</div>`;
   }
   return `<div class="cols">
       <div class="box"><h3>What the evidence shows</h3><p>${esc(r.known)}</p></div>
@@ -395,7 +399,7 @@ function bodyHTML(r){
       <div class="box"><h3>Next evidence request</h3><p>${esc(r.next)}</p></div>
     </div>
     ${r.lead?`<div class="box lead" style="margin-top:16px"><h3>Story lead to check</h3><p>${esc(r.lead)}</p></div>`:""}
-    ${srcHTML(r)}`;
+    ${townsHTML(r)}${srcHTML(r)}`;
 }
 function render(){
   $("#levels").innerHTML = LEVELS.map(l=>`<button type="button" aria-pressed="${l===level}" data-level="${esc(l)}">${esc(l)}</button>`).join("");
@@ -428,7 +432,7 @@ function render(){
       `<h2 class="subhead">Records that name ${esc(town)}</h2>` +
       (named.length ? ul(named) : `<p class="empty">No record at this level names ${esc(town)} yet.</p>`) +
       (wide.length ? `<h2 class="subhead">Records covering the whole province or region</h2><p class="subnote">These apply to ${esc(town)} along with every other municipality in their area.</p>` + ul(wide) : "") +
-      (basin.length ? `<div class="basin-note"><h3>River-basin records not yet tied to towns</h3><p class="subnote">These cover river basins or channels, but their sources do not yet list which municipalities are included. Choose All municipalities to see them.</p><ul>${basin.map(r=>`<li>${esc(r.title)} (${esc(r.area)})</li>`).join("")}</ul></div>` : "");
+      (basin.length ? `<div class="basin-note"><h3>River-basin records that do not name ${esc(town)}</h3><p class="subnote">These cover river basins or channels, but their sources do not name ${esc(town)}. Some may still include it. Choose All municipalities to see them.</p><ul>${basin.map(r=>`<li>${esc(r.title)} (${esc(r.area)})</li>`).join("")}</ul></div>` : "");
   }
   const gaps = (level==="All levels" && !town) ? GAPS : [];
   $("#gaps").innerHTML = gaps.map(g=>`<div class="gap"><h3>Not yet covered: ${esc(g.title)}</h3><p>${esc(g.text)}</p></div>`).join("");
