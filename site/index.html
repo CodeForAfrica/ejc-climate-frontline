@@ -227,6 +227,8 @@ const SRC = {
   p_cbx:{label:"Contracts platform: Casella-Barxeta storage area, FP.499.080/2111", url:"https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=b5WpNOUccmj%2B3JAijKO%2Bkg%3D%3D"},
   p_cbxs:{label:"Contracts platform: Casella-Barxeta site supervision, FP.499.080/0611", url:"https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=TZ%2BMwlA%2FgO6GCFcHcNGIlQ%3D%3D"},
   boe_cbx:{label:"BOE land-occupation notice for Casella-Barxeta and Cogullada, 27 Oct 2026", url:"https://www.boe.es/boe/dias/2026/10/27/pdfs/BOE-B-2026-35116.pdf"},
+  endavant:{label:"Generalitat Valenciana, Plan Endavant (master recovery plan), July 2025", url:"https://planendavant.gva.es/documents/393406936/393408958/20250729_Plan+Endavant_vCastellano.pdf/6f324454-4001-1ebe-b983-ab16d9fe023b?t=1753875615359"},
+  endavant_prog:{label:"Generalitat Valenciana, Plan Endavant progress viewer", url:"https://planendavant.gva.es/es/avanc-del-plan-endavant"},
   dival:{label:"Valencia News on the Diputació portal, 23 Jun 2026", url:"https://valencianews.es/comarcas/la-diputacion-de-valencia-crea-un-portal-de-transparencia-con-toda-la-gestion-y-los-contratos-de-la-reconstruccion-tras-la-dana/"}
 };
 // chain values: d = official document seen, r = reported only, n = not established; optional note per stage
@@ -342,16 +344,16 @@ const RECORDS = [
    ask:["Where in the catchment is the restoration taking place?"],
    sources:["p_forest", "p_forestdecl","mit_plan"]},
   {id:"rerd", reach:"region", towns:[], level:"Generalitat", body:"Generalitat Valenciana (Consell)", area:"Comunitat Valenciana",
-   title:"Generalitat recovery and resilience plan for the DANA (Plan RERD)",
-   status:"Plan named; contents not reviewed", kind:"reported",
-   chain:[["r"],["n"],["n"],["n"],["n"],["n"]],
-   known:"Press coverage refers to the Consell’s Plan RERD (Recovery, Reconstruction and Resilience) as the Generalitat’s framework for the DANA response.",
-   unknown:"Which of its measures reduce future flood risk, their budgets and their timetables.",
-   next:"Obtain the plan from the Generalitat and extract each flood-risk measure as its own record.",
-   lead:"",
-   resident:"The regional government has a plan for recovery and resilience after the DANA. This register has not yet reviewed what it commits to on flood protection.",
-   ask:["Which measures in the plan reduce flood risk in my area, and how much is budgeted?"],
-   sources:["moncloa"]},
+   title:"Generalitat recovery plan for the DANA (Plan Endavant)",
+   status:"Plan published; basin flood plans left to the State", kind:"doc",
+   chain:[["d","Plan published, Jul 2025"],["n","No amount per measure"],["n"],["n"],["n"],["n"]],
+   known:"The Generalitat’s master recovery plan, Plan Endavant, was published in July 2025. It sets out 343 initiatives with a preliminary budget of €29,000M for the whole plan, but gives no amount for each initiative. Its flood initiatives include one flood plan for each river basin: the Saleta, the Poyo, the basins draining to l’Albufera, the Magro, the lower Turia and the lower Júcar (E.5.2 to E.5.7). Each is assigned to the State, with no start date set. Repair of damaged channels (E.4.1) is shared by the State, the Generalitat and town councils and marked as under way. The plan also covers flood forecasting and alerts (E.6.3, E.6.4) and a forest strategy for river headwaters (C.16.1). Earlier press coverage called the plan ‘Plan RERD’; that name does not appear in the official document.",
+   unknown:"Which flood initiatives have started or finished, what each will cost, and whether the State has taken on the basin flood plans assigned to it.",
+   next:"Read the plan’s progress viewer for the flood initiatives (E.4 to E.6); ask the Generalitat and MITECO who is drafting each basin flood plan.",
+   lead:"The Generalitat’s plan assigns every basin flood plan to the State with no start date, and the State’s own plan gives the Poyo and Saleta measures no amount of their own. Who is responsible, and when will the work start?",
+   resident:"The regional government’s recovery plan, Plan Endavant, lists hundreds of measures. For flood protection on each river and barranco, it says the national government is responsible, and it sets no start date.",
+   ask:["Which measures in the plan affect my town, and have they started?","Who is responsible for flood protection on my river or barranco?"],
+   sources:["endavant","endavant_prog","moncloa"]},
   {id:"beniparrell", reach:"town", towns:["46065"], level:"Generalitat", body:"Conselleria de Agricultura, Agua, Ganadería y Pesca", area:"Beniparrell",
    title:"Works on the Barranco de Picassent in Beniparrell to reduce flood risk",
    status:"Contract awarded", kind:"doc",
@@ -400,7 +402,7 @@ const RECORDS = [
 // INE municipality codes (INE list at 1 Jan 2026) -> names shown on the site
 const MUNI = {"46005": "Alaquàs", "46008": "Albalat de la Ribera", "46012": "Alborache", "46017": "Alzira", "46019": "L'Alcúdia", "46021": "Aldaia", "46022": "Alfafar", "46026": "Alfarp", "46029": "Algemesí", "46031": "Alginet", "46065": "Beniparrell", "46077": "Buñol", "46079": "Calles", "46083": "Carcaixent", "46085": "Carlet", "46093": "Catadau", "46094": "Catarroja", "46102": "Quart de Poblet", "46109": "Cheste", "46110": "Xirivella", "46111": "Chiva", "46125": "Fortaleny", "46136": "Godelleta", "46139": "Guadassuar", "46148": "Loriguilla", "46156": "Llombai", "46158": "Macastre", "46165": "Massanassa", "46176": "Montroi", "46186": "Paiporta", "46193": "Picanya", "46197": "Polinyà de Xúquer", "46212": "Real", "46213": "Requena", "46214": "Riba-roja de Túria", "46215": "Riola", "46223": "Sedaví", "46235": "Sueca", "46244": "Torrent", "46248": "Turís", "46249": "Utiel", "46250": "València", "46256": "Vilamarxant", "46261": "Yátova"};
 const GAPS = [
-  {title:"Early warning commitments", text:"No record yet on commitments to improve flood warnings and alerts, a central question after October 2024."},
+  {title:"Early warning commitments", text:"No record yet on commitments to improve flood warnings and alerts, a central question after October 2024. Plan Endavant includes initiatives on flood forecasting and alerts (E.6.3, E.6.4) that could become records."},
   {title:"Valencia city and other affected towns", text:"Only one town council is covered so far. The next step is to sample towns that joined the GVA local DANA transparency space."}
 ];
 
