@@ -11,7 +11,7 @@
 <style>
 :root{
   color-scheme: light;
-  --bg:#eef1ee; --paper:#fbfcfa; --ink:#18282c; --muted:#55666a; --line:#c9d3d1;
+  --bg:#eef1ee; --paper:#fbfcfa; --focus:#e4eeec; --ink:#18282c; --muted:#55666a; --line:#c9d3d1;
   --accent:#1d5c66; --accent-soft:#d6e6e6; --warn:#8a5410; --warn-soft:#f3e6d0;
   --serif:"Fraunces", Georgia, "Times New Roman", serif;
   --sans:"DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -22,13 +22,13 @@
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     color-scheme: dark;
-    --bg:#11191b; --paper:#182224; --ink:#e3eae9; --muted:#9fb0b2; --line:#2c3a3d;
+    --bg:#11191b; --paper:#182224; --focus:#16272a; --ink:#e3eae9; --muted:#9fb0b2; --line:#2c3a3d;
     --accent:#84c3cc; --accent-soft:#1f3a3e; --warn:#e0b36d; --warn-soft:#3a2e1b;
   }
 }
 :root[data-theme="dark"]{
   color-scheme: dark;
-  --bg:#11191b; --paper:#182224; --ink:#e3eae9; --muted:#9fb0b2; --line:#2c3a3d;
+  --bg:#11191b; --paper:#182224; --focus:#16272a; --ink:#e3eae9; --muted:#9fb0b2; --line:#2c3a3d;
   --accent:#84c3cc; --accent-soft:#1f3a3e; --warn:#e0b36d; --warn-soft:#3a2e1b;
 }
 html{font-size:112.5%;scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -76,7 +76,8 @@ header.hero{padding:48px 0 32px}
 .legend .dot.rep::after{inset:3px}
 
 .records{list-style:none;margin:8px 0 0;padding:0}
-.record{border-bottom:1px solid var(--line)}
+.record{border-bottom:1px solid var(--line);border-radius:10px;transition:background-color .2s ease}
+.record.open{background:var(--focus);margin:0 clamp(-20px,-2vw,-10px);padding:0 clamp(10px,2vw,20px);border-bottom-color:transparent}
 .rhead{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:20px 32px;align-items:center;width:100%;text-align:left;padding:22px 0}
 .rhead:hover .rtitle{color:var(--accent)}
 .rmeta{font-size:.8125rem;color:var(--muted);margin-bottom:6px;display:flex;flex-wrap:wrap;gap:4px 14px}
@@ -493,7 +494,7 @@ function render(){
   const atLevel = RECORDS.filter(r => level==="All levels" || r.level===level);
   const item = r=>{
     const isOpen = open.has(r.id);
-    return `<li class="record">
+    return `<li class="record${isOpen?" open":""}">
       <button type="button" class="rhead" aria-expanded="${isOpen}" aria-controls="b-${r.id}" data-id="${r.id}">
         <div>
           <div class="rmeta"><span>${esc(r.level)}</span><span>${esc(r.area)}</span></div>
