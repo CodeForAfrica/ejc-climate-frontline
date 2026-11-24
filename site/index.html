@@ -409,7 +409,7 @@ const TOWNS = [...new Set(RECORDS.flatMap(r => r.towns))].sort((a,b)=>MUNI[a].lo
 const NAME = c => MUNI[c] || c;
 const WIDE = {province:"Valencia province", region:"Comunitat Valenciana"};
 try {
-  // Accepts an INE code (#town=46186) or, for links shared earlier, a name (#town=Paiporta).
+  // Links use the town name (#town=Paiporta); an INE code (#town=46186) also works. Filtering is by code.
   const h = decodeURIComponent(location.hash.replace(/^#town=/,""));
   town = TOWNS.includes(h) ? h : (TOWNS.find(c => NAME(c) === h) || "");
 } catch(e){}
@@ -481,7 +481,7 @@ function render(){
 }
 $("#town").addEventListener("change", e=>{
   town = e.target.value;
-  try { history.replaceState(null, "", town ? "#town=" + encodeURIComponent(town) : location.pathname + location.search); } catch(err){}
+  try { history.replaceState(null, "", town ? "#town=" + encodeURIComponent(NAME(town)) : location.pathname + location.search); } catch(err){}
   render();
 });
 document.addEventListener("click", e=>{
