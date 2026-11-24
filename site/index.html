@@ -87,8 +87,9 @@ header.hero{padding:48px 0 32px}
 
 .rbody{padding:0 0 28px}
 .cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.box.known{grid-column:1/-1}
+.box.known.wide{grid-column:1/-1}
 .box.known p{max-width:78ch}
+.cols .dates{margin-top:0;align-self:start}
 .box p + p{margin-top:10px}
 .box{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
 .box h3{font-size:.875rem;font-weight:600;margin-bottom:6px}
@@ -105,7 +106,8 @@ header.hero{padding:48px 0 32px}
 .dates li{position:relative;padding:0 0 8px 16px;font-size:.9375rem}
 .dates li::before{content:"";position:absolute;left:-5px;top:.45em;width:8px;height:8px;border-radius:50%;background:var(--accent)}
 .dates li.future::before{background:var(--paper);border:2px solid var(--accent);width:4px;height:4px}
-.dates time{display:inline-block;min-width:7.5em;font-weight:600;font-variant-numeric:tabular-nums}
+.dates li{display:grid;grid-template-columns:6.8em 1fr;column-gap:10px}
+.dates time{font-weight:600;font-variant-numeric:tabular-nums}
 .dates .tag{font-size:.75rem;color:var(--muted);margin-left:6px}
 
 .gap{border:1px dashed var(--line);border-radius:10px;padding:18px 20px;margin-top:22px;background:transparent}
@@ -468,7 +470,7 @@ function datesHTML(r){
   if(!r.dates || !r.dates.length) return "";
   return `<div class="box dates"><h3>Key dates</h3><ol>${r.dates.map(([d,label])=>{
     const future = d.replace("~","") > SNAPSHOT;
-    return `<li class="${future?"future":""}"><time datetime="${esc(d.replace("~",""))}">${esc(fmtDate(d))}</time> ${esc(label)}${future?`<span class="tag">scheduled</span>`:""}</li>`;
+    return `<li class="${future?"future":""}"><time datetime="${esc(d.replace("~",""))}">${esc(fmtDate(d))}</time><span>${esc(label)}${future?`<span class="tag">scheduled</span>`:""}</span></li>`;
   }).join("")}</ol></div>`;
 }
 function bodyHTML(r){
@@ -476,12 +478,12 @@ function bodyHTML(r){
     return `<div class="resident"><p>${esc(r.resident)}</p><h3>Questions you can ask</h3><ul>${r.ask.map(a=>`<li>${esc(a)}</li>`).join("")}</ul>${datesHTML(r)}${townsHTML(r)}${srcHTML(r)}</div>`;
   }
   return `<div class="cols">
-      <div class="box known"><h3>What the evidence shows</h3>${[].concat(r.known).map(k=>`<p>${esc(k)}</p>`).join("")}</div>
+      <div class="box known${r.dates&&r.dates.length?"":" wide"}"><h3>What the evidence shows</h3>${[].concat(r.known).map(k=>`<p>${esc(k)}</p>`).join("")}</div>
+      ${datesHTML(r)}
       <div class="box"><h3>Not yet established</h3><p>${esc(r.unknown)}</p></div>
       <div class="box"><h3>Next evidence request</h3><p>${esc(r.next)}</p></div>
     </div>
     ${r.lead?`<div class="box lead" style="margin-top:16px"><h3>Story lead to check</h3><p>${esc(r.lead)}</p></div>`:""}
-    ${datesHTML(r)}
     ${townsHTML(r)}${srcHTML(r)}`;
 }
 function render(){
