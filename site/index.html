@@ -57,6 +57,7 @@ header.hero{padding:48px 0 32px}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chips button{padding:6px 12px;border:1px solid var(--line);border-radius:999px;font-size:.875rem;background:var(--paper);min-height:36px}
 .chips button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.chips .count{color:var(--muted);font-variant-numeric:tabular-nums}
 
 .legend{display:flex;flex-wrap:wrap;gap:18px;font-size:.8125rem;color:var(--muted);padding:14px 0 6px}
 .legend span{display:inline-flex;align-items:center;gap:7px}
@@ -652,7 +653,9 @@ function bodyHTML(r){
     ${townsHTML(r)}${srcHTML(r)}`;
 }
 function render(){
-  $("#levels").innerHTML = LEVELS.map(l=>`<button type="button" aria-pressed="${l===level}" data-level="${esc(l)}">${esc(l)}</button>`).join("");
+  // Counts come from RECORDS on every render, so they stay right as records are added.
+  const countAt = l => l==="All levels" ? RECORDS.length : RECORDS.filter(r=>r.level===l).length;
+  $("#levels").innerHTML = LEVELS.map(l=>`<button type="button" aria-pressed="${l===level}" data-level="${esc(l)}">${esc(l)} <span class="count">(${countAt(l)})</span></button>`).join("");
   $("#town").innerHTML = `<option value="">All municipalities</option>` +
     TOWNS.map(x=>`<option value="${esc(x)}"${x===town?" selected":""}>${esc(NAME(x))}</option>`).join("");
   const atLevel = RECORDS.filter(r => level==="All levels" || r.level===level);
