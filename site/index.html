@@ -48,7 +48,8 @@ header.hero{padding:48px 0 32px}
 .hero h1{font-family:var(--serif);font-weight:450;font-size:clamp(2rem,4.6vw,3.25rem);line-height:1.08;letter-spacing:-.02em;max-width:22ch}
 .hero p.lede{margin-top:18px;max-width:62ch;font-size:1.0625rem;color:var(--muted)}
 
-.toolbar{display:flex;flex-wrap:wrap;gap:20px 32px;align-items:end;padding:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.toolbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px 32px;align-items:start;padding:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.controls{display:flex;flex-wrap:wrap;gap:20px 32px;align-items:end;min-width:0}
 .group{display:flex;flex-direction:column;gap:8px}
 .group > span{font-size:.8125rem;color:var(--muted)}
 .seg{display:inline-flex;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:3px}
@@ -59,7 +60,8 @@ header.hero{padding:48px 0 32px}
 .chips button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
 .chips .count{color:var(--muted);font-variant-numeric:tabular-nums}
 
-.legend{display:flex;flex-wrap:wrap;gap:18px;font-size:.8125rem;color:var(--muted);padding:14px 0 6px}
+.legend{display:flex;flex-direction:column;gap:9px;font-size:.8125rem;color:var(--muted);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;min-width:0}
+.legend h2{font-size:.8125rem;font-weight:600;color:var(--ink);margin:0 0 2px}
 .legend span{display:inline-flex;align-items:center;gap:7px}
 
 /* The evidence chain: a gauge of stations along a channel */
@@ -139,6 +141,7 @@ footer{border-top:1px solid var(--line);padding:20px 0 32px;font-size:.8125rem;c
   .rhead{grid-template-columns:1fr}
   .cols{grid-template-columns:1fr}
   .resident-grid{grid-template-columns:1fr}
+  .toolbar{grid-template-columns:1fr}
   section.more{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -157,7 +160,8 @@ footer{border-top:1px solid var(--line);padding:20px 0 32px;font-size:.8125rem;c
     <p class="lede">Seed records from the October 2024 DANA area, across the State, the Generalitat, the Diputació and town councils. Each record shows which stages are backed by an official document, which rest on reports, and what to ask for next. Choose a municipality to see what applies there.</p>
   </header>
 
-  <div class="toolbar" role="group" aria-label="Filters">
+  <div class="toolbar">
+    <div class="controls" role="group" aria-label="Filters">
     <div class="group">
       <span id="view-label">View as</span>
       <div class="seg" role="group" aria-labelledby="view-label">
@@ -173,13 +177,15 @@ footer{border-top:1px solid var(--line);padding:20px 0 32px;font-size:.8125rem;c
       <span id="level-label">Responsible level</span>
       <div class="chips" id="levels" role="group" aria-labelledby="level-label"></div>
     </div>
+    </div>
+    <aside class="legend" aria-labelledby="legend-title">
+        <h2 id="legend-title">How to read the stages</h2>
+        <span><i class="dot doc" aria-hidden="true"></i>Official document seen</span>
+        <span><i class="dot rep" aria-hidden="true"></i>Reported, document not yet seen</span>
+        <span><i class="dot none" aria-hidden="true"></i>Not established yet</span>
+      </aside>
   </div>
 
-  <div class="legend" aria-label="How to read the evidence chain">
-    <span><i class="dot doc" aria-hidden="true"></i>Official document seen</span>
-    <span><i class="dot rep" aria-hidden="true"></i>Reported, primary document not yet seen</span>
-    <span><i class="dot none" aria-hidden="true"></i>Not established in this packet</span>
-  </div>
 
   <div id="records"></div>
   <div id="gaps"></div>
